@@ -61,11 +61,21 @@ async function run() {
     });
 
     // Animal realated api
-
     app.get("/animals", async (req, res) => {
-      const animals = await animalCollection.find().toArray();
+      const category = req.query.category;
+      let query = {};
+
+      query = { animal_category: category };
+
+      if (query.animal_category === "All") {
+        const animals = await animalCollection.find().toArray();
+        return res.send(animals);
+      }
+
+      const animals = await animalCollection.find(query).toArray();
       res.send(animals);
     });
+
     app.post("/animals", async (req, res) => {
       const animal = req.body;
       const result = await animalCollection.insertOne(animal);
