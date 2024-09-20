@@ -29,7 +29,11 @@ async function run() {
     const categoryCollection = client
       .db("animal_time")
       .collection("categoryCollection");
+    const animalCollection = client
+      .db("animal_time")
+      .collection("animalCollection");
 
+    // Category related api
     app.get("/categories", async (req, res) => {
       const categories = await categoryCollection.find().toArray();
       res.send(categories);
@@ -53,6 +57,18 @@ async function run() {
       }
 
       const result = await categoryCollection.insertOne(category);
+      res.send(result);
+    });
+
+    // Animal realated api
+
+    app.get("/animals", async (req, res) => {
+      const animals = await animalCollection.find().toArray();
+      res.send(animals);
+    });
+    app.post("/animals", async (req, res) => {
+      const animal = req.body;
+      const result = await animalCollection.insertOne(animal);
       res.send(result);
     });
 
